@@ -60,8 +60,8 @@ const Contact = () => {
                     France
                   </address>
                   <div className="flex flex-col space-y-2">
-                    <a href="tel:+33140089950" className="text-[#E00000] hover:underline">+33 (0) 1 40 08 99 50</a>
-                    <a href="mailto:contact@gethrought.com" className="text-[#E00000] hover:underline">contact@gethrought.com</a>
+                    <a href="tel:+33140089950" className="text-[#c4121f] hover:underline">+33 (0) 1 40 08 99 50</a>
+                    <a href="mailto:contact@gethrought.com" className="text-[#c4121f] hover:underline">contact@gethrought.com</a>
                   </div>
                 </div>
                 
