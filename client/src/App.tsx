@@ -14,6 +14,7 @@ import International from "@/pages/international";
 import Rejoindre from "@/pages/rejoindre";
 import Actualites from "@/pages/actualites";
 import Contact from "@/pages/contact";
+import JobApplication from "@/pages/job-application";
 
 function Router() {
   const [location] = useLocation();
@@ -33,6 +34,7 @@ function Router() {
             <Route path="/solutions" component={Solutions} />
             <Route path="/international" component={International} />
             <Route path="/nous-rejoindre" component={Rejoindre} />
+            <Route path="/nous-rejoindre/postuler/:id" component={JobApplication} />
             <Route path="/actualites" component={Actualites} />
             <Route path="/contact" component={Contact} />
             <Route component={NotFound} />
