@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertContactSchema, insertNewsletterSchema } from "@shared/schema";
+import { insertContactSchema, insertNewsletterSchema, insertJobApplicationSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -170,6 +170,71 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error subscribing to newsletter:", error);
       res.status(500).json({ message: "Failed to subscribe to newsletter" });
+    }
+  });
+
+  // Submit job application
+  app.post("/api/jobs/:jobId/apply", async (req, res) => {
+    try {
+      const jobId = parseInt(req.params.jobId);
+      if (isNaN(jobId)) {
+        return res.status(400).json({ message: "Invalid job ID" });
+      }
+
+      // Check if job exists
+      const job = await storage.getJob(jobId);
+      if (!job) {
+        return res.status(404).json({ message: "Job not found" });
+      }
+
+      // Validate application data
+      const applicationData = { ...req.body, jobId };
+      const validationResult = insertJobApplicationSchema.safeParse(applicationData);
+      
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          message: "Invalid application data", 
+          errors: validationResult.error.errors 
+        });
+      }
+
+      // Store the application
+      const application = await storage.createJobApplication(validationResult.data);
+      
+      // Send email notification (placeholder - will be implemented with SendGrid)
+      // TODO: Implement email notification with SendGrid API
+      
+      res.status(201).json({ 
+        message: "Application submitted successfully", 
+        applicationId: application.id 
+      });
+    } catch (error) {
+      console.error("Error submitting job application:", error);
+      res.status(500).json({ message: "Failed to submit job application" });
+    }
+  });
+
+  // Get job applications for a specific job (protected endpoint for admins)
+  app.get("/api/jobs/:jobId/applications", async (req, res) => {
+    try {
+      const jobId = parseInt(req.params.jobId);
+      if (isNaN(jobId)) {
+        return res.status(400).json({ message: "Invalid job ID" });
+      }
+
+      // Check if job exists
+      const job = await storage.getJob(jobId);
+      if (!job) {
+        return res.status(404).json({ message: "Job not found" });
+      }
+
+      // TODO: Add authentication to protect this endpoint
+
+      const applications = await storage.getJobApplicationsByJobId(jobId);
+      res.json(applications);
+    } catch (error) {
+      console.error("Error fetching job applications:", error);
+      res.status(500).json({ message: "Failed to fetch job applications" });
     }
   });
 

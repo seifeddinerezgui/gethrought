@@ -1,5 +1,12 @@
 import {
   users,
+  solutions,
+  locations,
+  jobs,
+  news,
+  contacts,
+  newsletters,
+  jobApplications,
   type User,
   type InsertUser,
   type Solution,
@@ -58,190 +65,210 @@ export interface IStorage {
   getJobApplicationsByJobId(jobId: number): Promise<JobApplication[]>;
 }
 
-// In-memory storage implementation
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private solutions: Map<number, Solution>;
-  private locations: Map<number, Location>;
-  private jobs: Map<number, Job>;
-  private news: Map<number, News>;
-  private contacts: Map<number, Contact>;
-  private newsletters: Map<number, Newsletter>;
-  private jobApplications: Map<number, JobApplication>;
-  
-  private currentUserId: number;
-  private currentSolutionId: number;
-  private currentLocationId: number;
-  private currentJobId: number;
-  private currentNewsId: number;
-  private currentContactId: number;
-  private currentNewsletterId: number;
-  private currentJobApplicationId: number;
+// Database Storage Implementation
+import { db } from "./db";
+import { eq, desc, asc, sql } from "drizzle-orm";
 
-  constructor() {
-    this.users = new Map();
-    this.solutions = new Map();
-    this.locations = new Map();
-    this.jobs = new Map();
-    this.news = new Map();
-    this.contacts = new Map();
-    this.newsletters = new Map();
-
-    this.currentUserId = 1;
-    this.currentSolutionId = 1;
-    this.currentLocationId = 1;
-    this.currentJobId = 1;
-    this.currentNewsId = 1;
-    this.currentContactId = 1;
-    this.currentNewsletterId = 1;
-
-    // Initialize with sample data
-    this.initSampleData();
-  }
-
-  // User methods (already defined)
+export class DatabaseStorage implements IStorage {
+  // User methods
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username
-    );
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentUserId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
     return user;
   }
 
   // Solutions methods
   async getSolutions(): Promise<Solution[]> {
-    return Array.from(this.solutions.values()).sort((a, b) => a.order - b.order);
+    return db.select().from(solutions).orderBy(asc(solutions.order));
   }
 
   async getSolution(id: number): Promise<Solution | undefined> {
-    return this.solutions.get(id);
+    const [solution] = await db.select().from(solutions).where(eq(solutions.id, id));
+    return solution || undefined;
   }
 
   async createSolution(insertSolution: InsertSolution): Promise<Solution> {
-    const id = this.currentSolutionId++;
-    const solution: Solution = { ...insertSolution, id };
-    this.solutions.set(id, solution);
+    const [solution] = await db
+      .insert(solutions)
+      .values(insertSolution)
+      .returning();
     return solution;
   }
 
   // Locations methods
   async getLocations(): Promise<Location[]> {
-    return Array.from(this.locations.values());
+    return db.select().from(locations);
   }
 
   async getLocation(id: number): Promise<Location | undefined> {
-    return this.locations.get(id);
+    const [location] = await db.select().from(locations).where(eq(locations.id, id));
+    return location || undefined;
   }
 
   async createLocation(insertLocation: InsertLocation): Promise<Location> {
-    const id = this.currentLocationId++;
-    const location: Location = { ...insertLocation, id };
-    this.locations.set(id, location);
+    const [location] = await db
+      .insert(locations)
+      .values(insertLocation)
+      .returning();
     return location;
   }
 
   // Jobs methods
   async getJobs(): Promise<Job[]> {
-    return Array.from(this.jobs.values()).filter(job => job.isActive);
+    return db.select().from(jobs).where(eq(jobs.isActive, true));
   }
 
   async getJob(id: number): Promise<Job | undefined> {
-    return this.jobs.get(id);
+    const [job] = await db.select().from(jobs).where(eq(jobs.id, id));
+    return job || undefined;
   }
 
   async createJob(insertJob: InsertJob): Promise<Job> {
-    const id = this.currentJobId++;
-    const job: Job = { ...insertJob, id };
-    this.jobs.set(id, job);
+    const [job] = await db
+      .insert(jobs)
+      .values(insertJob)
+      .returning();
     return job;
   }
 
   // News methods
   async getAllNews(): Promise<News[]> {
-    return Array.from(this.news.values()).sort((a, b) => 
-      new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
-    );
+    return db.select().from(news).orderBy(desc(news.publishDate));
   }
 
   async getNews(page: number, limit: number): Promise<{ news: News[], total: number }> {
-    const allNews = await this.getAllNews();
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
+    const offset = (page - 1) * limit;
+    
+    const newsItems = await db
+      .select()
+      .from(news)
+      .orderBy(desc(news.publishDate))
+      .limit(limit)
+      .offset(offset);
+    
+    const [{ count }] = await db
+      .select({ count: sql`count(*)`.mapWith(Number) })
+      .from(news);
     
     return {
-      news: allNews.slice(startIndex, endIndex),
-      total: allNews.length
+      news: newsItems,
+      total: count
     };
   }
 
   async getNewsByCategory(category: string, page: number, limit: number): Promise<{ news: News[], total: number }> {
-    const allNewsInCategory = (await this.getAllNews())
-      .filter(newsItem => newsItem.category === category);
+    const offset = (page - 1) * limit;
     
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
+    const newsItems = await db
+      .select()
+      .from(news)
+      .where(eq(news.category, category))
+      .orderBy(desc(news.publishDate))
+      .limit(limit)
+      .offset(offset);
+    
+    const [{ count }] = await db
+      .select({ count: sql`count(*)`.mapWith(Number) })
+      .from(news)
+      .where(eq(news.category, category));
     
     return {
-      news: allNewsInCategory.slice(startIndex, endIndex),
-      total: allNewsInCategory.length
+      news: newsItems,
+      total: count
     };
   }
 
   async getNewsItem(id: number): Promise<News | undefined> {
-    return this.news.get(id);
+    const [newsItem] = await db.select().from(news).where(eq(news.id, id));
+    return newsItem || undefined;
   }
 
   async createNews(insertNews: InsertNews): Promise<News> {
-    const id = this.currentNewsId++;
-    const newsItem: News = { ...insertNews, id };
-    this.news.set(id, newsItem);
+    const [newsItem] = await db
+      .insert(news)
+      .values(insertNews)
+      .returning();
     return newsItem;
   }
 
   // Contact form submissions
   async createContact(insertContact: InsertContact): Promise<Contact> {
-    const id = this.currentContactId++;
-    const contact: Contact = { 
-      ...insertContact, 
-      id, 
-      createdAt: new Date() 
+    const contactData = {
+      ...insertContact,
+      createdAt: new Date()
     };
-    this.contacts.set(id, contact);
+    
+    const [contact] = await db
+      .insert(contacts)
+      .values(contactData)
+      .returning();
     return contact;
   }
 
   // Newsletter subscriptions
   async createNewsletter(insertNewsletter: InsertNewsletter): Promise<Newsletter> {
     // Check if email already exists
-    const existingEmail = Array.from(this.newsletters.values()).find(
-      (newsletter) => newsletter.email === insertNewsletter.email
-    );
+    const [existingEmail] = await db
+      .select()
+      .from(newsletters)
+      .where(eq(newsletters.email, insertNewsletter.email));
     
     if (existingEmail) {
       return existingEmail;
     }
     
-    const id = this.currentNewsletterId++;
-    const newsletter: Newsletter = { 
-      ...insertNewsletter, 
-      id, 
-      createdAt: new Date() 
+    const newsletterData = {
+      ...insertNewsletter,
+      createdAt: new Date()
     };
-    this.newsletters.set(id, newsletter);
+    
+    const [newsletter] = await db
+      .insert(newsletters)
+      .values(newsletterData)
+      .returning();
     return newsletter;
   }
+  
+  // Job Applications
+  async createJobApplication(insertJobApplication: InsertJobApplication): Promise<JobApplication> {
+    const applicationData = {
+      ...insertJobApplication,
+      status: "new",
+      createdAt: new Date()
+    };
+    
+    const [application] = await db
+      .insert(jobApplications)
+      .values(applicationData)
+      .returning();
+    return application;
+  }
+  
+  async getJobApplicationsByJobId(jobId: number): Promise<JobApplication[]> {
+    return db
+      .select()
+      .from(jobApplications)
+      .where(eq(jobApplications.jobId, jobId))
+      .orderBy(desc(jobApplications.createdAt));
+  }
 
-  // Initialize with sample data
-  private initSampleData() {
+  // Method to initialize sample data
+  async initSampleData() {
+    // This method will be called explicitly after database setup
+    console.log("Initializing sample data in database...");
+    
     // Solutions
     const solutionData: InsertSolution[] = [
       {
@@ -274,9 +301,9 @@ export class MemStorage implements IStorage {
       }
     ];
     
-    solutionData.forEach(solution => {
-      this.createSolution(solution);
-    });
+    for (const solution of solutionData) {
+      await this.createSolution(solution);
+    }
 
     // International locations
     const locationData: InsertLocation[] = [
@@ -370,9 +397,9 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    locationData.forEach(location => {
-      this.createLocation(location);
-    });
+    for (const location of locationData) {
+      await this.createLocation(location);
+    }
 
     // Jobs
     const jobData: InsertJob[] = [
@@ -413,9 +440,9 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    jobData.forEach(job => {
-      this.createJob(job);
-    });
+    for (const job of jobData) {
+      await this.createJob(job);
+    }
 
     // News
     const newsData: InsertNews[] = [
@@ -469,10 +496,12 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    newsData.forEach(newsItem => {
-      this.createNews(newsItem);
-    });
+    for (const newsItem of newsData) {
+      await this.createNews(newsItem);
+    }
+    
+    console.log("Sample data initialization complete");
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
