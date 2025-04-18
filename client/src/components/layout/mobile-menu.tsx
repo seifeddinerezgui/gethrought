@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
+import logoImage from "../../assets/logo.png";
 
 interface MobileMenuProps {
   onClose: () => void;
@@ -63,9 +64,9 @@ const MobileMenu = ({ onClose }: MobileMenuProps) => {
           <Link href="/">
             <a className="flex items-center">
               <img
-                src="https://placehold.co/150x40/e00000/FFFFFF?text=GETHROUGHT"
-                alt="Gethrought Logo"
-                className="h-10"
+                src={logoImage}
+                alt="GTAC Logo"
+                className="h-12"
               />
             </a>
           </Link>

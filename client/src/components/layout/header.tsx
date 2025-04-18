@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import MobileMenu from "./mobile-menu";
+import logoImage from "../../assets/logo.png";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -39,9 +40,9 @@ const Header = () => {
             <Link href="/">
               <a className="flex items-center">
                 <img
-                  src="https://placehold.co/150x40/e00000/FFFFFF?text=GETHROUGHT"
-                  alt="Gethrought Logo"
-                  className="h-10"
+                  src={logoImage}
+                  alt="GTAC Logo"
+                  className="h-12"
                 />
               </a>
             </Link>

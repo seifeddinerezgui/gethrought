@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import NewsletterForm from "../ui/newsletter-form";
+import logoImage from "../../assets/logo.png";
 
 const Footer = () => {
   return (
@@ -8,8 +9,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div>
             <img
-              src="https://placehold.co/150x40/e00000/FFFFFF?text=GETHROUGHT"
-              alt="Gethrought Logo"
+              src={logoImage}
+              alt="GTAC Logo"
               className="h-12 mb-6"
             />
             <p className="mb-6">
@@ -121,7 +122,7 @@ const Footer = () => {
         
         <div className="border-t border-white border-opacity-20 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-gray-400 mb-4 md:mb-0">
-            © {new Date().getFullYear()} Gethrought. Tous droits réservés.
+            © {new Date().getFullYear()} GTAC. Tous droits réservés.
           </div>
           <div className="flex space-x-6">
             <Link href="/mentions-legales">
