@@ -1,6 +1,12 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { db } from "./db";
+import * as schema from "@shared/schema";
+import { drizzle } from "drizzle-orm/neon-serverless";
+import { migrate } from "drizzle-orm/neon-serverless/migrator";
+import { sql } from "drizzle-orm";
+import { storage } from "./storage";
 
 const app = express();
 app.use(express.json());
@@ -37,6 +43,102 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  try {
+    // Initialize database schema
+    log("Initializing database schema...");
+    
+    // Create tables in the database
+    await db.execute(sql.raw(`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        username TEXT NOT NULL,
+        password TEXT NOT NULL
+      );
+      
+      CREATE TABLE IF NOT EXISTS solutions (
+        id SERIAL PRIMARY KEY,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        image_url TEXT NOT NULL,
+        link TEXT NOT NULL,
+        "order" INTEGER NOT NULL
+      );
+      
+      CREATE TABLE IF NOT EXISTS locations (
+        id SERIAL PRIMARY KEY,
+        title TEXT NOT NULL,
+        address TEXT NOT NULL,
+        city TEXT NOT NULL,
+        postal_code TEXT NOT NULL,
+        country TEXT NOT NULL,
+        phone TEXT NOT NULL,
+        email TEXT NOT NULL,
+        latitude TEXT,
+        longitude TEXT
+      );
+      
+      CREATE TABLE IF NOT EXISTS jobs (
+        id SERIAL PRIMARY KEY,
+        title TEXT NOT NULL,
+        location TEXT NOT NULL,
+        contract_type TEXT NOT NULL,
+        description TEXT NOT NULL,
+        is_active BOOLEAN NOT NULL DEFAULT TRUE
+      );
+      
+      CREATE TABLE IF NOT EXISTS news (
+        id SERIAL PRIMARY KEY,
+        title TEXT NOT NULL,
+        excerpt TEXT NOT NULL,
+        content TEXT NOT NULL,
+        image_url TEXT NOT NULL,
+        publish_date TIMESTAMP NOT NULL,
+        category TEXT NOT NULL
+      );
+      
+      CREATE TABLE IF NOT EXISTS contacts (
+        id SERIAL PRIMARY KEY,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        phone TEXT,
+        company TEXT,
+        message TEXT NOT NULL,
+        created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+        accept_terms BOOLEAN NOT NULL
+      );
+      
+      CREATE TABLE IF NOT EXISTS newsletters (
+        id SERIAL PRIMARY KEY,
+        email TEXT NOT NULL UNIQUE,
+        created_at TIMESTAMP NOT NULL DEFAULT NOW()
+      );
+      
+      CREATE TABLE IF NOT EXISTS job_applications (
+        id SERIAL PRIMARY KEY,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        phone TEXT,
+        job_id INTEGER NOT NULL,
+        resume_url TEXT NOT NULL,
+        cover_letter TEXT,
+        linkedin_url TEXT,
+        created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+        accept_terms BOOLEAN NOT NULL,
+        status TEXT NOT NULL
+      );
+    `));
+    
+    log("Database schema initialized successfully.");
+    
+    // Initialize sample data
+    await storage.initSampleData();
+    
+  } catch (error) {
+    console.error("Error initializing database:", error);
+  }
+  
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
