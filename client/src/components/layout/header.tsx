@@ -38,13 +38,13 @@ const Header = () => {
           <div className="flex justify-between items-center">
             {/* Logo */}
             <Link href="/">
-              <div className="cursor-pointer flex items-center">
+              <a className="flex items-center">
                 <img
                   src={logoImage}
                   alt="GTAC Logo"
                   className="h-12"
                 />
-              </div>
+              </a>
             </Link>
             
             {/* Desktop Navigation */}
@@ -110,11 +110,11 @@ interface NavLinkProps {
 const NavLink = ({ href, active, children }: NavLinkProps) => {
   return (
     <Link href={href}>
-      <div className={`font-medium transition-colors cursor-pointer ${
-        active ? "text-[#c4121f]" : "text-gray-800 hover:text-[#c4121f]"
+      <a className={`font-medium transition-colors ${
+        active ? "text-[#E00000]" : "text-gray-800 hover:text-[#E00000]"
       }`}>
         {children}
-      </div>
+      </a>
     </Link>
   );
 };
