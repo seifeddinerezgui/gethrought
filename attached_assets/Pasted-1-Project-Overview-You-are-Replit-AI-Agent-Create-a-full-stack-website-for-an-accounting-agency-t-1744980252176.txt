@@ -1,0 +1,53 @@
+1. Project Overview:
+You are Replit AI Agent. Create a full-stack website for an accounting agency that matches the look, feel, and structure of https://bma-groupe.com/ exactly for these five sections: 
+- Nos solutions
+- Le cabinet Gethrought à l’international
+- Nous rejoindre
+- Actualités
+- Contact
+Use the client’s logo colors: white (#FFFFFF), red (#E00000), night‑blue (#001F3F). Deliver a pixel‑perfect, responsive UI with modern animations, and a production‑ready backend.
+Target pages & layout: Mirror BM&A’s content blocks, icon‑driven solution cards, team grids, timeline/history, job listings, blog feed, and contact form 
+Color palette: White backgrounds, red accent buttons/headings, night‑blue nav/footer 
+Typography & imagery: Use clean, professional fonts (e.g. Inter or Poppins), high‑quality SVG icons, and optimized photos.
+2. UI/UX Requirements :
+Responsive, mobile‑first grid layout using Tailwind CSS utilities.
+Intuitive navigation: Sticky header with links to each page, clear hover states, and breadcrumb trails 
+Custom iconography for service categories (e.g., tax forms, audit tools) to guide users visually 
+Trust elements: Testimonials carousel, partner logos, compliance badges, and newsletter signup in the footer 
+htmlBurger
+SEO & accessibility: Semantic HTML, ARIA roles, optimized metadata, sitemap.xml, alt texts.
+3. Page‑by‑Page Breakdown
+3.1 Nos solutions
+Hero with summary text and illustration.
+Solution cards (Outsourcing, Project Management, Advisory…) with icons and “En savoir plus” links 
+BM&A
+3.2 Le cabinet à l’international
+Global map highlighting 130+ countries.
+Partnership methodology section (BM&A Alliance) and single‑point‑of‑contact details 
+3.3 Nous rejoindre
+Company values & culture video banner.
+Job listings fetched from /api/jobs, each with title, location, description, and “Postuler” button 
+3.4 Actualités
+Paginated blog feed sorted by date, with cards showing image, title, excerpt, and “Lire la suite.”
+Sidebar newsletter signup and category filters 
+3.5 Contact
+Contact form (name, email, phone, company, message) posting to /api/contact.
+Embedded Google Map iframe for the main office.
+Clear CTA button styled in red for high conversion 
+4. Tech Stack & Architecture
+Frontend: Next.js (React), Tailwind CSS, Framer Motion for animations 
+Backend: Node.js, Express, Prisma ORM, MySQL.
+APIs:
+GET /api/solutions
+GET /api/international
+GET /api/jobs
+GET /api/news
+POST /api/contact
+Authentication (optional for CMS): JWT‑based admin login.
+Deployment: Replit’s built‑in CI/CD, environment variables for DB credentials.
+6. Animations & Interactions
+Page transitions: Fade‑through with Framer Motion’s <AnimatePresence> 
+Hover effects: Card lift and shadow intensification.
+Scroll reveals: Slide‑up + opacity animations for sections.
+Mobile menu: Slide‑in sidebar nav.
+Agent, prioritize a refined, polished UI: pixel‑perfect alignment, consistent spacing, and high‑contrast CTAs. Ensure the backend is secure, maintainable, and documented. Deliver production‑ready code with clear comments, comprehensive README, and one‑click deploy on Replit.
