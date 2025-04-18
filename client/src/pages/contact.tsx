@@ -40,14 +40,14 @@ const Contact = () => {
             <motion.div variants={fadeInUp}>
               <div className="h-64 md:h-96 mb-8 rounded-lg overflow-hidden shadow-md">
                 <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.2186766970364!2d2.319052076538422!3d48.87470267133166!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66fc9466f63d7%3A0x861ba77fd17bd12e!2s11%20Rue%20de%20Laborde%2C%2075008%20Paris!5e0!3m2!1sen!2sfr!4v1692874072887!5m2!1sen!2sfr" 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3195.3147940971984!2d10.19271107678393!3d36.8220221471954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDQ5JzE5LjIiTiAxMMKwMTEnNDMuMCJF!5e0!3m2!1sfr!2sus!4v1692874072887!5m2!1sfr!2sus" 
                   width="100%" 
                   height="100%" 
                   style={{ border: 0 }} 
                   allowFullScreen 
                   loading="lazy" 
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Google Maps - Gethrought Paris office"
+                  title="Google Maps - GTAC Tunis office"
                 ></iframe>
               </div>
               
@@ -60,8 +60,8 @@ const Contact = () => {
                     France
                   </address>
                   <div className="flex flex-col space-y-2">
-                    <a href="tel:+33140089950" className="text-[#E00000] hover:underline">+33 (0) 1 40 08 99 50</a>
-                    <a href="mailto:contact@gethrought.com" className="text-[#E00000] hover:underline">contact@gethrought.com</a>
+                    <a href="tel:+33140089950" className="text-[#c4121f] hover:underline">+33 (0) 1 40 08 99 50</a>
+                    <a href="mailto:contact@gethrought.com" className="text-[#c4121f] hover:underline">contact@gethrought.com</a>
                   </div>
                 </div>
                 
@@ -115,8 +115,8 @@ const Contact = () => {
                 69002 Lyon
               </address>
               <div className="flex flex-col space-y-2">
-                <a href="tel:+33140089950" className="text-[#E00000] hover:underline">+33 (0) 1 40 08 99 50</a>
-                <a href="mailto:contact@gethrought.com" className="text-[#E00000] hover:underline">contact@gethrought.com</a>
+                <a href="tel:+33140089950" className="text-[#c4121f] hover:underline">+33 (0) 1 40 08 99 50</a>
+                <a href="mailto:contact@gethrought.com" className="text-[#c4121f] hover:underline">contact@gethrought.com</a>
               </div>
             </motion.div>
             
@@ -130,8 +130,8 @@ const Contact = () => {
                 London EC1R 0JH, United Kingdom
               </address>
               <div className="flex flex-col space-y-2">
-                <a href="tel:+447979313103" className="text-[#E00000] hover:underline">+44 (0) 7979 3131 03</a>
-                <a href="mailto:contact@gethrought.com" className="text-[#E00000] hover:underline">contact@gethrought.com</a>
+                <a href="tel:+447979313103" className="text-[#c4121f] hover:underline">+44 (0) 7979 3131 03</a>
+                <a href="mailto:contact@gethrought.com" className="text-[#c4121f] hover:underline">contact@gethrought.com</a>
               </div>
             </motion.div>
             
@@ -145,8 +145,8 @@ const Contact = () => {
                 Casablanca
               </address>
               <div className="flex flex-col space-y-2">
-                <a href="tel:+212522276372" className="text-[#E00000] hover:underline">+212 (0) 5 22 27 63 72</a>
-                <a href="mailto:contact@gethrought.com" className="text-[#E00000] hover:underline">contact@gethrought.com</a>
+                <a href="tel:+212522276372" className="text-[#c4121f] hover:underline">+212 (0) 5 22 27 63 72</a>
+                <a href="mailto:contact@gethrought.com" className="text-[#c4121f] hover:underline">contact@gethrought.com</a>
               </div>
             </motion.div>
           </div>
@@ -157,7 +157,7 @@ const Contact = () => {
           >
             <a 
               href="/international" 
-              className="inline-flex items-center text-[#E00000] font-medium hover:underline"
+              className="inline-flex items-center text-[#c4121f] font-medium hover:underline"
             >
               Voir tous nos bureaux
               <i className="fas fa-arrow-right ml-2"></i>
@@ -181,7 +181,7 @@ const Contact = () => {
           </p>
           <a 
             href="/nous-rejoindre" 
-            className="inline-block bg-[#E00000] hover:bg-[#c00000] text-white py-3 px-8 rounded transition-all duration-300 transform hover:-translate-y-1 font-medium"
+            className="inline-block bg-[#c4121f] hover:bg-[#a50f1a] text-white py-3 px-8 rounded transition-all duration-300 transform hover:-translate-y-1 font-medium"
           >
             Nos offres d'emploi
           </a>
