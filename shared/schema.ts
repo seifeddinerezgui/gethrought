@@ -74,6 +74,22 @@ export const newsletters = pgTable("newsletters", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+// Job applications model
+export const jobApplications = pgTable("job_applications", {
+  id: serial("id").primaryKey(),
+  jobId: integer("job_id").notNull(),
+  firstName: text("first_name").notNull(),
+  lastName: text("last_name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  resumeUrl: text("resume_url").notNull(),
+  coverLetter: text("cover_letter"),
+  linkedinUrl: text("linkedin_url"),
+  status: text("status").notNull().default("new"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  acceptTerms: boolean("accept_terms").notNull(),
+});
+
 // Schema validation for inserts
 export const insertSolutionSchema = createInsertSchema(solutions);
 export const insertLocationSchema = createInsertSchema(locations);
@@ -92,6 +108,18 @@ export const insertContactSchema = createInsertSchema(contacts).pick({
 
 export const insertNewsletterSchema = createInsertSchema(newsletters).pick({
   email: true,
+});
+
+export const insertJobApplicationSchema = createInsertSchema(jobApplications).pick({
+  jobId: true,
+  firstName: true,
+  lastName: true,
+  email: true,
+  phone: true,
+  resumeUrl: true,
+  coverLetter: true,
+  linkedinUrl: true,
+  acceptTerms: true,
 });
 
 // Define types for inserts and selects
@@ -120,3 +148,6 @@ export type Contact = typeof contacts.$inferSelect;
 
 export type InsertNewsletter = z.infer<typeof insertNewsletterSchema>;
 export type Newsletter = typeof newsletters.$inferSelect;
+
+export type InsertJobApplication = z.infer<typeof insertJobApplicationSchema>;
+export type JobApplication = typeof jobApplications.$inferSelect;

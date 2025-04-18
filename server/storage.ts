@@ -13,7 +13,9 @@ import {
   type Contact,
   type InsertContact,
   type Newsletter,
-  type InsertNewsletter
+  type InsertNewsletter,
+  type JobApplication,
+  type InsertJobApplication
 } from "@shared/schema";
 
 // Interface for storage operations
@@ -50,6 +52,10 @@ export interface IStorage {
 
   // Newsletters
   createNewsletter(newsletter: InsertNewsletter): Promise<Newsletter>;
+  
+  // Job Applications
+  createJobApplication(application: InsertJobApplication): Promise<JobApplication>;
+  getJobApplicationsByJobId(jobId: number): Promise<JobApplication[]>;
 }
 
 // In-memory storage implementation
@@ -61,6 +67,7 @@ export class MemStorage implements IStorage {
   private news: Map<number, News>;
   private contacts: Map<number, Contact>;
   private newsletters: Map<number, Newsletter>;
+  private jobApplications: Map<number, JobApplication>;
   
   private currentUserId: number;
   private currentSolutionId: number;
@@ -69,6 +76,7 @@ export class MemStorage implements IStorage {
   private currentNewsId: number;
   private currentContactId: number;
   private currentNewsletterId: number;
+  private currentJobApplicationId: number;
 
   constructor() {
     this.users = new Map();
