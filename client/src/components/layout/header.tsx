@@ -30,7 +30,7 @@ const Header = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.3 }}
-        className={`sticky top-0 z-50 bg-white ${
+        className={`sticky top-0 z-50 bg-[#090816] ${
           isScrolled ? "shadow-md py-2" : "py-4"
         } transition-all duration-300`}
       >
@@ -67,12 +67,12 @@ const Header = () => {
               <NavLink href="/contact" active={location === "/contact"}>
                 Contact
               </NavLink>
-              <div className="border-l border-gray-300 h-5 mx-2"></div>
+              <div className="border-l border-gray-500 h-5 mx-2"></div>
               <div className="flex items-center space-x-2">
                 <NavLink href="#" active={true}>
                   FR
                 </NavLink>
-                <span>/</span>
+                <span className="text-white">/</span>
                 <NavLink href="#" active={false}>
                   EN
                 </NavLink>
@@ -81,7 +81,7 @@ const Header = () => {
             
             {/* Mobile Menu Button */}
             <button 
-              className="lg:hidden text-[#001F3F] focus:outline-none" 
+              className="lg:hidden text-white focus:outline-none" 
               onClick={() => setIsMobileMenuOpen(true)}
               aria-label="Open mobile menu"
             >
@@ -111,7 +111,7 @@ const NavLink = ({ href, active, children }: NavLinkProps) => {
   return (
     <Link href={href}>
       <a className={`font-medium transition-colors ${
-        active ? "text-[#E00000]" : "text-gray-800 hover:text-[#E00000]"
+        active ? "text-[#c4121f]" : "text-white hover:text-[#c4121f]"
       }`}>
         {children}
       </a>

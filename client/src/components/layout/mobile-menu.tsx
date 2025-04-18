@@ -89,7 +89,7 @@ const MobileMenu = ({ onClose }: MobileMenuProps) => {
             >
               <Link href={item.href}>
                 <a
-                  className="text-gray-800 hover:text-[#E00000] font-medium text-xl transition-colors"
+                  className="text-gray-800 hover:text-[#c4121f] font-medium text-xl transition-colors"
                   onClick={onClose}
                 >
                   {item.label}
@@ -105,11 +105,11 @@ const MobileMenu = ({ onClose }: MobileMenuProps) => {
             animate="visible"
           >
             <div className="flex items-center space-x-2">
-              <a href="#" className="text-[#E00000] font-medium">
+              <a href="#" className="text-[#c4121f] font-medium">
                 FR
               </a>
               <span>/</span>
-              <a href="#" className="text-gray-800 hover:text-[#E00000] font-medium">
+              <a href="#" className="text-gray-800 hover:text-[#c4121f] font-medium">
                 EN
               </a>
             </div>

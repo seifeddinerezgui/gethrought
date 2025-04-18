@@ -40,14 +40,14 @@ const Contact = () => {
             <motion.div variants={fadeInUp}>
               <div className="h-64 md:h-96 mb-8 rounded-lg overflow-hidden shadow-md">
                 <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.2186766970364!2d2.319052076538422!3d48.87470267133166!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66fc9466f63d7%3A0x861ba77fd17bd12e!2s11%20Rue%20de%20Laborde%2C%2075008%20Paris!5e0!3m2!1sen!2sfr!4v1692874072887!5m2!1sen!2sfr" 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3194.9750822775485!2d10.192479312607954!3d36.82202217418133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDQ5JzE5LjMiTiAxMMKwMTEnNDMuMCJF!5e0!3m2!1sen!2sus!4v1704650122221!5m2!1sen!2sus" 
                   width="100%" 
                   height="100%" 
                   style={{ border: 0 }} 
                   allowFullScreen 
                   loading="lazy" 
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Google Maps - Gethrought Paris office"
+                  title="Google Maps - Gethrought Tunis office"
                 ></iframe>
               </div>
               
